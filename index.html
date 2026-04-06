@@ -256,35 +256,110 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, #0a2a1e 0%, #0f3d2e 45%, #1a5c44 100%);
+      background: #060f0a;
     }
+
+    /* ── 3-Panel photo grid fills the entire hero ── */
+    .hero-panels {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      z-index: 0;
+    }
+
+    .hero-panel {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Thin gold divider between panels */
+    .hero-panel + .hero-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(200,169,106,0.5) 20%,
+        rgba(200,169,106,0.5) 80%,
+        transparent
+      );
+      z-index: 3;
+    }
+
+    /* Each image inside a panel — cover fills edge-to-edge, no black bars */
+    .hero-panel img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+      /* Ken Burns slow zoom */
+      animation: kenburns 10s ease-in-out infinite alternate;
+    }
+    .hero-panel img.active { opacity: 1; }
+
+    @keyframes kenburns {
+      from { transform: scale(1);    }
+      to   { transform: scale(1.08); }
+    }
+
+    /* Dark gradient over all panels — keeps text legible */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(6,15,10,0.55) 0%,
+          rgba(6,15,10,0.30) 40%,
+          rgba(6,15,10,0.65) 100%),
+        linear-gradient(to right,
+          rgba(6,15,10,0.20) 0%,
+          rgba(6,15,10,0.00) 50%,
+          rgba(6,15,10,0.20) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Islamic geometric pattern sits above photos */
     .hero-geo {
       position: absolute;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23c8a96a' stroke-width='0.5' opacity='0.12'%3E%3Cpolygon points='60,6 78,24 96,6 114,24 96,42 114,60 96,78 114,96 96,114 78,96 60,114 42,96 24,114 6,96 24,78 6,60 24,42 6,24 24,6 42,24'/%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3Ccircle cx='60' cy='60' r='36'/%3E%3Cline x1='60' y1='6' x2='60' y2='114'/%3E%3Cline x1='6' y1='60' x2='114' y2='60'/%3E%3Cline x1='18' y1='18' x2='102' y2='102'/%3E%3Cline x1='102' y1='18' x2='18' y2='102'/%3E%3C/g%3E%3C/svg%3E");
+      z-index: 3;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23c8a96a' stroke-width='0.5' opacity='0.07'%3E%3Cpolygon points='60,6 78,24 96,6 114,24 96,42 114,60 96,78 114,96 96,114 78,96 60,114 42,96 24,114 6,96 24,78 6,60 24,42 6,24 24,6 42,24'/%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3Ccircle cx='60' cy='60' r='36'/%3E%3Cline x1='60' y1='6' x2='60' y2='114'/%3E%3Cline x1='6' y1='60' x2='114' y2='60'/%3E%3Cline x1='18' y1='18' x2='102' y2='102'/%3E%3Cline x1='102' y1='18' x2='18' y2='102'/%3E%3C/g%3E%3C/svg%3E");
       background-repeat: repeat;
+      pointer-events: none;
     }
+
     /* Decorative circles */
     .hero-circle-1 {
       position: absolute;
       width: 600px; height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,169,106,0.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(200,169,106,0.06) 0%, transparent 70%);
       top: -100px; right: -100px;
       pointer-events: none;
+      z-index: 4;
     }
     .hero-circle-2 {
       position: absolute;
       width: 400px; height: 400px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(240,228,225,0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(240,228,225,0.04) 0%, transparent 70%);
       bottom: -100px; left: -100px;
       pointer-events: none;
+      z-index: 4;
     }
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 720px;
+      max-width: 100%;
       padding-top: 72px;
     }
     .hero-badge {
@@ -315,17 +390,17 @@
       color: var(--gold-light);
     }
     .hero-sub {
-      font-size: clamp(16px, 2vw, 19px);
-      color: rgba(255,255,255,0.75);
+      font-size: clamp(16px, 2vw, 22px);
+      color: rgba(255,255,255,0.80);
       line-height: 1.75;
       margin-bottom: 12px;
-      max-width: 560px;
+      max-width: 100%;
     }
     .hero-desc {
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
+      font-size: 15px;
+      color: rgba(255,255,255,0.52);
       margin-bottom: 40px;
-      max-width: 480px;
+      max-width: 100%;
       line-height: 1.8;
     }
     .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
@@ -1305,6 +1380,12 @@
       .nav-links, .nav-cta { display: none; }
       .hamburger { display: flex; }
       .section { padding: 64px 0; }
+      /* Hero: collapse to 1 panel on mobile, hide side panels */
+      .hero-panels { display: block; }
+      .hero-panel:nth-child(2),
+      .hero-panel:nth-child(3) { display: none; }
+      .hero-panel:first-child { width: 100%; height: 100%; position: absolute; inset: 0; }
+      .hero-btns { flex-direction: column; align-items: center; }
       .gallery-grid {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto;
@@ -1313,7 +1394,6 @@
       .gallery-item:nth-child(5) { grid-column: span 1; grid-row: span 1; }
       .footer-grid { grid-template-columns: 1fr; gap: 28px; }
       .footer-bottom { flex-direction: column; text-align: center; }
-      .hero-btns { flex-direction: column; align-items: flex-start; }
       .cta-inner { padding: 48px 24px; }
       .newsletter-form { flex-direction: column; }
       .newsletter-form input { border-radius: var(--radius-sm); }
@@ -1326,6 +1406,8 @@
       .gallery-item { height: 180px; }
       .form-row { grid-template-columns: 1fr; }
       .reg-form { padding: 28px 20px; }
+      .hero-title { font-size: 36px; }
+      .hero-sub { font-size: 15px; }
     }
   </style>
 </head>
@@ -1376,12 +1458,43 @@
 
 <!-- ═══════════════════════════════════════════════ HERO -->
 <section id="hero">
+
+  <!-- ── 3-panel full-bleed photo grid ── -->
+  <div class="hero-panels" id="heroPanels">
+    <!-- Panel 1 -->
+    <div class="hero-panel">
+      <img src="download (1).jfif"      alt="Sisters" class="active" />
+      <img src="download (2).jfif"      alt="Sisters" />
+      <img src="download (3).jfif"      alt="Sisters" />
+      <img src="kabeh ki ronak_.jfif"   alt="Sisters" />
+    </div>
+    <!-- Panel 2 -->
+    <div class="hero-panel">
+      <img src="download (2).jfif"      alt="Sisters" class="active" />
+      <img src="download (3).jfif"      alt="Sisters" />
+      <img src="kabeh ki ronak_.jfif"   alt="Sisters" />
+      <img src="download (1).jfif"      alt="Sisters" />
+    </div>
+    <!-- Panel 3 -->
+    <div class="hero-panel">
+      <img src="kabeh ki ronak_.jfif"   alt="Sisters" class="active" />
+      <img src="download (1).jfif"      alt="Sisters" />
+      <img src="download (2).jfif"      alt="Sisters" />
+      <img src="download (3).jfif"      alt="Sisters" />
+    </div>
+  </div>
+
+  <!-- Dark overlay for text readability -->
+  <div class="hero-overlay"></div>
+  <!-- Islamic geometric pattern -->
   <div class="hero-geo"></div>
+  <!-- Glow circles -->
   <div class="hero-circle-1"></div>
   <div class="hero-circle-2"></div>
 
-  <div class="container">
-    <div class="hero-content">
+  <!-- Hero text — centered over all 3 panels -->
+  <div class="container" style="position:relative;z-index:5;max-width:100%;padding:0 48px;">
+    <div class="hero-content" style="max-width:100%;padding-top:72px;">
       <div class="hero-badge">A Sisters' Qur'an Community</div>
 
       <h1 class="hero-title">
@@ -1403,7 +1516,7 @@
     </div>
   </div>
 
-  <div class="hero-scroll">Scroll</div>
+  <div class="hero-scroll" style="z-index:5;">Scroll</div>
 </section>
 
 
@@ -2414,6 +2527,29 @@
       }
     });
   });
+
+  /* ── HERO 3-PANEL CYCLING ── */
+  (function () {
+    var panels = document.querySelectorAll('.hero-panel');
+    var INTERVAL = 5000;   // ms between photo changes per panel
+    var STAGGER  = 1400;   // ms delay between each panel's cycle
+
+    panels.forEach(function (panel, panelIndex) {
+      var imgs    = panel.querySelectorAll('img');
+      var current = 0;
+
+      function advance() {
+        imgs[current].classList.remove('active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('active');
+      }
+
+      /* Stagger each panel so they don't all flip at once */
+      setTimeout(function () {
+        setInterval(advance, INTERVAL);
+      }, panelIndex * STAGGER);
+    });
+  })();
 </script>
 
 </body>
